@@ -11,6 +11,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#flowerCanvas {
+    display: block;
+    margin: 10px auto;
+    border-radius: 10px;
 }
 
 .youtube-player {
@@ -41,19 +50,19 @@ body {
 
 .input-section {
     background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
-    border-radius: 10px;
+    padding: 15px;
+    border-radius: 8px;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
     width: 100%;
 }
 
 label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: #e91e63;
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 input[type="text"] {
@@ -97,74 +106,111 @@ input[type="text"]:focus {
 
 .card {
     background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 20px 20px 0; /* Bỏ padding-bottom để hoa sát đáy */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
-    max-width: 600px;
-    position: relative;
-    animation: fadeIn 1s ease-in;
+    max-width: 400px;
+    position: relative; /* Đổi thành relative để chứa bông hoa */
+    transform: scale(0.9);
+    animation: fadeInCard 1s ease-in;
 }
 
 .heart {
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     background: #ff4081;
     position: relative;
     transform: rotate(45deg);
-    margin: 20px auto;
+    margin: 15px auto;
     animation: heartbeat 1.5s infinite;
 }
 
 .heart:before,
 .heart:after {
     content: "";
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     background: #ff4081;
     border-radius: 50%;
     position: absolute;
 }
 
 .heart:before {
-    left: -25px;
+    left: -17.5px;
 }
 
 .heart:after {
-    top: -25px;
+    top: -17.5px;
 }
 
 h1 {
     color: #e91e63;
-    margin: 20px 0;
-    font-size: 2.5em;
+    margin: 15px 0;
+    font-size: 2em;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .message {
-    margin: 30px 0;
+    margin: 20px 0;
 }
 
 .message p {
-    font-size: 1.2em;
+    font-size: 1em;
     color: #555;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .wishes {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    margin: 20px 0;
+    gap: 15px;
+    padding: 15px;
+    margin: 15px 0;
     position: relative;
-    pointer-events: none;
 }
 
-.card {
+.wishes span {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 15px;
     position: relative;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+}
+
+.wishes span:hover {
+    transform: scale(1.05);
+    background: linear-gradient(45deg, rgba(255,192,203,0.2), rgba(255,182,193,0.3));
+}
+
+.wishes span.clicked {
+    animation: wishClick 0.5s ease;
+}
+
+@keyframes wishClick {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.wish-particles {
+    position: absolute;
+    pointer-events: none;
+    font-size: 20px;
+    animation: particleFly 1s ease-out forwards;
     z-index: 1000;
-    pointer-events: all;
+}
+
+@keyframes particleFly {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--x, 100px), var(--y, -100px)) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 @keyframes wishFall {
@@ -208,11 +254,11 @@ h1 {
 
 .falling-wish {
     position: fixed;
-    padding: 10px;
-    font-size: 1.2em;
+    padding: 8px;
+    font-size: 1em;
     color: #d81b60;
-    line-height: 1.6;
-    max-width: 400px;
+    line-height: 1.4;
+    max-width: 300px;
     animation: wishFall 15s linear forwards;
     z-index: 100;
     text-align: center;
@@ -220,8 +266,8 @@ h1 {
 }
 
 .falling-wish .emoji {
-    font-size: 1.8em;
-    margin: 5px 0;
+    font-size: 1.5em;
+    margin: 4px 0;
     text-shadow: none;
 }
 
@@ -265,17 +311,15 @@ h1 {
     animation-delay: 1s;
 }
 
-@keyframes heartbeat {
-    0% { transform: rotate(45deg) scale(1); }
-    14% { transform: rotate(45deg) scale(1.1); }
-    28% { transform: rotate(45deg) scale(1); }
-    42% { transform: rotate(45deg) scale(1.1); }
-    70% { transform: rotate(45deg) scale(1); }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInCard {
+    from { 
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0) scale(0.9);
+    }
 }
 
 @keyframes fadeOut {
@@ -283,15 +327,12 @@ h1 {
     to { opacity: 0; transform: translateY(-20px); }
 }
 
-@keyframes slideIn {
-    from { 
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+@keyframes heartbeat {
+    0% { transform: rotate(45deg) scale(1); }
+    14% { transform: rotate(45deg) scale(1.1); }
+    28% { transform: rotate(45deg) scale(1); }
+    42% { transform: rotate(45deg) scale(1.1); }
+    70% { transform: rotate(45deg) scale(1); }
 }
 
 @keyframes float {
@@ -351,6 +392,10 @@ h1 {
         transform: scale(1) rotate(0) translate(var(--random-x, 50px), var(--random-y, 50px));
     }
 }
+
+
+
+
 
 @media (max-width: 480px) {
     .card {
