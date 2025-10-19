@@ -5,7 +5,10 @@ const validNames = [
     "Bùi Ngọc Bảo Linh"
 ];
 
+'use strict';
+
 document.addEventListener('DOMContentLoaded', () => {
+
     // Add floating hearts randomly
     setInterval(createHeart, 1500);
     
@@ -32,6 +35,31 @@ function checkName() {
     );
     
     if (matchedName) {
+        // Play music when name matches
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 0.5; // Set volume to 50%
+        bgMusic.muted = false;
+        
+        const playMusic = async () => {
+            try {
+                await bgMusic.play();
+                console.log('Nhạc đang phát');
+            } catch (error) {
+                console.error('Lỗi phát nhạc:', error);
+                // Retry once after a short delay
+                setTimeout(async () => {
+                    try {
+                        await bgMusic.play();
+                        console.log('Phát nhạc thành công sau khi thử lại');
+                    } catch (e) {
+                        console.error('Không thể phát nhạc:', e);
+                    }
+                }, 1000);
+            }
+        };
+        
+        playMusic();
+
         // Hide input section with fade out animation
         const inputSection = document.querySelector('.input-section');
         inputSection.style.animation = 'fadeOut 0.5s ease-out forwards';
@@ -307,25 +335,30 @@ function createLaughingEmojis() {
     }
 }
 
-// Add this style to the document
-const style = document.createElement('style');
-style.textContent = `
-    .floating-heart {
-        position: fixed;
-        top: -20px;
-        animation: floatUp 5s linear;
-        z-index: 1000;
-    }
-    
-    @keyframes floatUp {
-        0% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 1;
+// Add floating heart styles
+const floatingHeartStyles = {
+    element: 'style',
+    content: `
+        .floating-heart {
+            position: fixed;
+            top: -20px;
+            animation: floatUp 5s linear;
+            z-index: 1000;
         }
-        100% {
-            transform: translateY(-100vh) rotate(360deg);
-            opacity: 0;
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
-    }
-`;
+    `
+};
+
+const style = document.createElement(floatingHeartStyles.element);
+style.textContent = floatingHeartStyles.content;
 document.head.appendChild(style);
